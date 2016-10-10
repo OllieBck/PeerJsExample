@@ -5,8 +5,12 @@ socket.on('connect', function() {
 	console.log("Connected");
 });
 
-// Receive other folks peer ids
+// Receive other folks peer ids // added if statement
 socket.on('peer_id', function (data) {
+	if (data == peer_id){
+		console.log("This is  you " + data);
+	}
+	else {
 	console.log("Got a new peer: " + data);
   var call = peer.call(data, my_stream);
 
@@ -17,13 +21,14 @@ socket.on('peer_id', function (data) {
 		ovideoElement.setAttribute("autoplay", "true");
 		ovideoElement.play();
 	});
-
+}
 });
 
 socket.on('group', function(data){
+		console.log("I got Group"); // debug group call
 		var numToCall = data;
 		var call = peer.call(numToCall, my_stream);
-
+/*
 		call.on('stream', function(remoteStream) {  // we receive a getUserMedia stream from the remote caller
 					// And attach it to a video object
 					//var ovideoElement = document.getElementById('othervideo');
@@ -33,6 +38,7 @@ socket.on('group', function(data){
 					ovideoElement.play();
 					document.body.appendChild(ovideoElement);
 				});
+				*/
 });
 
 var my_stream = null;
@@ -53,7 +59,7 @@ if (navigator.getUserMedia) {
 			//var peer = new Peer({key: 'YOUR API KEY'});
 			// The Peer Cloud Server doesn't seem to be operational, I setup a server on a Digital Ocean instance for our use, you can use that with the following constructor:
 			// can setup a user name
-			peer = new Peer({host: 'liveweb.itp.io', port: 9000, path: '/'});
+			peer = new Peer({host: 'job271.itp.io', port: 9000, path: '/'});
 
 			peer.on('error', function(err){
 				console.log(err);
